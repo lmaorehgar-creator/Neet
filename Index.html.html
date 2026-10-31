@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vaishali’s NEET Tracker by SMASHER 🎀</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌸%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff4f8;--card:#fff;--ink:#4a2a3a;--muted:#9a7186;
+  --accent:#e8588c;--accent2:#f9a8c6;--lavender:#e4d9fb;--soft:#ffe6ef;
+  --shadow:0 8px 24px rgba(232,88,140,.14);
+  --head:'Playfair Display',Georgia,'Times New Roman',serif;
+  --body:'Quicksand',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1d1220;--card:#2b1c2f;--ink:#f8e8f0;--muted:#c49bb3;
+    --accent:#ff8fb8;--accent2:#a14a70;--lavender:#3b2d57;--soft:#3a2339;
+    --shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1d1220;--card:#2b1c2f;--ink:#f8e8f0;--muted:#c49bb3;
+  --accent:#ff8fb8;--accent2:#a14a70;--lavender:#3b2d57;--soft:#3a2339;
+  --shadow:0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:calc(84px + env(safe-area-inset-bottom));
+}
+#app{max-width:720px;margin:0 auto;padding:18px 16px 8px}
+h1,h2,h3{font-family:var(--head);margin:0;font-weight:700}
+h1{font-size:24px;color:var(--accent);line-height:1.25;margin-bottom:14px}
+h2{font-size:22px;color:var(--accent);margin-bottom:2px}
+h3{font-size:17px;margin-bottom:10px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.card{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row2 .card{margin-bottom:14px;text-align:center}
+.big{font-family:var(--head);font-size:42px;font-weight:700;color:var(--accent);line-height:1.1}
+.lbl{color:var(--muted);font-size:12.5px;font-weight:600}
+.muted{color:var(--muted)}
+.warn{background:var(--soft);border:1.5px solid var(--accent);color:var(--ink);border-radius:22px;padding:12px 16px;margin-bottom:14px;font-weight:600;font-size:13.5px}
+.note{background:var(--lavender);border-radius:18px;padding:12px 14px;font-size:13.5px;margin-bottom:14px}
+.focus-title{font-family:var(--head);font-size:22px;color:var(--accent);font-weight:700}
+.pill{display:inline-block;background:var(--soft);border-radius:999px;padding:4px 12px;font-weight:700;font-size:13px;margin:6px 6px 0 0}
+.hrs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.hrs label,.sc label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+input[type=number],textarea{
+  width:100%;font-family:var(--body);font-size:16px;color:var(--ink);background:var(--bg);
+  border:1.5px solid var(--accent2);border-radius:16px;padding:9px 12px;outline:none;
+}
+textarea{resize:vertical;min-height:70px;line-height:1.4}
+input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
+.prow{margin-bottom:12px}
+.prow .top{display:flex;justify-content:space-between;font-weight:700;font-size:14px;margin-bottom:5px}
+.prow .small{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600}
+.bar{height:12px;border-radius:999px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .6s ease}
+.seg{display:flex;gap:8px;margin-bottom:12px}
+.seg button{
+  flex:1;font-family:var(--body);font-weight:700;font-size:14px;padding:10px 6px;border-radius:999px;cursor:pointer;
+  border:1.5px solid var(--accent2);background:var(--card);color:var(--ink)
+}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chrow{padding:12px 0;border-top:1px dashed var(--accent2)}
+.chrow:first-of-type{border-top:0;padding-top:2px}
+.chtop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.chname{font-weight:700;font-size:14.5px}
+.seq{display:inline-block;background:var(--lavender);color:var(--accent);border-radius:999px;font-size:11px;padding:0 8px;margin-right:6px;font-weight:700}
+.chr{white-space:nowrap;font-size:12px;color:var(--muted);font-weight:600}
+.tag{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:700;margin-right:4px}
+.tag.full{background:var(--accent);color:#fff}
+.tag.light{background:var(--lavender);color:var(--ink)}
+.tag.once{background:var(--lavender);color:var(--muted);opacity:.7}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--body);font-size:12.5px;font-weight:700;border-radius:999px;padding:6px 12px;cursor:pointer;
+  border:1.5px solid var(--accent2);background:transparent;color:var(--muted)
+}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.tc.faded{opacity:.62}
+.thead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+.thead b{font-family:var(--head);font-size:18px}
+.stat{font-size:12.5px;font-weight:700;color:var(--accent)}
+.tdate{color:var(--muted);font-size:13px;margin-bottom:10px}
+.tsyl{font-size:12.5px;color:var(--muted);margin:0 0 12px;padding-left:0;list-style:none}
+.tsyl li{margin-bottom:2px}.tsyl b{color:var(--ink)}
+.sc{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+.tot{font-weight:700;color:var(--accent);margin:2px 0 10px}
+.btn{
+  font-family:var(--body);font-weight:700;font-size:14px;border-radius:999px;border:0;cursor:pointer;
+  background:var(--accent);color:#fff;padding:11px 20px;margin:4px 8px 8px 0
+}
+.btn.alt{background:var(--lavender);color:var(--ink)}
+.msg{font-weight:700;color:var(--accent);font-size:13.5px;margin-top:6px}
+.scard h3{margin-bottom:6px}
+.scard p{margin:0 0 6px;font-size:14px}
+.scard ul{margin:4px 0 0;padding-left:20px;font-size:14px}
+.scard li{margin-bottom:4px}
+nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--card);
+  box-shadow:0 -6px 22px rgba(232,88,140,.16);border-radius:22px 22px 0 0;
+  padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+nav .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+nav button{
+  background:none;border:0;font-family:var(--body);cursor:pointer;color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 2px;border-radius:16px;font-size:11px;font-weight:700
+}
+nav button span{font-size:21px;line-height:1.2}
+nav button.on{color:var(--accent);background:var(--soft)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav><div class="in" id="nav"></div></nav>
+
+<script>
+(function(){
+'use strict';
+var KEY='neet27_planner_v1';
+var MS=864e5;
+
+/* ---------- date helpers ---------- */
+function p2(n){return n<10?'0'+n:''+n}
+function dnum(y,m,d){return Math.round(Date.UTC(y,m-1,d)/MS)}
+function dnOf(dt){return dnum(dt.getFullYear(),dt.getMonth()+1,dt.getDate())}
+function keyOf(n){var d=new Date(n*MS);return d.getUTCFullYear()+'-'+p2(d.getUTCMonth()+1)+'-'+p2(d.getUTCDate())}
+function todayN(){return dnOf(new Date())}
+var START=dnum(2026,11,1),END=dnum(2027,2,28),NEET=dnum(2027,5,2);
+var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmt(n){var d=new Date(n*MS);return DAYS[d.getUTCDay()]+', '+d.getUTCDate()+' '+MON[d.getUTCMonth()]+' '+d.getUTCFullYear()}
+
+/* ---------- data ---------- */
+function parse(s){return s.split(';').map(function(x){var a=x.trim().split('|');return {n:a[0],t:a[1]||'F',d:+(a[2]||0),q:a[3]?+a[3]:0}})}
+var SUBJ={
+ P:{name:'Physics',emoji:'⚡',groups:[
+  {name:'Physics · MR Sir',nc:false,ch:parse('Units & Dimensions|L|1|1; Basic Maths|L|1|2; Motion in 1D|F|2|3; Vectors|F|1|4; Motion in 2D|F|2|5; Laws of Motion|F|4|6; Work, Energy & Power|F|3|7; Centre of Mass & System of Particles|L|2; Rotational Motion|S|0; Gravitation|F|3|8; Fluids|L|2; Mechanical Properties of Solids|L|1|9; Thermal Properties of Matter|L|1|10; Thermodynamics|F|3; Kinetic Theory of Gases|L|1; Oscillations|L|2|11; Waves|L|2|12; Electric Charges & Fields|F|2|13; Electrostatic Potential & Capacitors|F|2|14; Current Electricity|F|4|15; Magnetism & Matter (with Moving Charges)|F|3|16; EMI|F|2|17; Alternating Current|L|1|18; Electromagnetic Waves|L|0.5|19; Ray Optics|F|3; Wave Optics|L|1; Dual Nature of Matter|F|2|20; Atoms|F|1|21; Nuclei|F|2|22; Semiconductors|F|2|23')}
+ ]},
+ C:{name:'Chemistry',emoji:'🧪',groups:[
+  {name:'Physical · Sudhanshu Sir',nc:false,ch:parse('Mole Concept|F|3; Redox Reactions|F|2; Solutions|L|1; Thermodynamics|F|3; Chemical Equilibrium|F|2; Ionic Equilibrium|F|3; Electrochemistry|F|3; Chemical Kinetics|F|2; Atomic Structure|F|3; States of Matter|L|1')},
+  {name:'Organic · Pankaj Sir',nc:true,ch:parse('GOC & Isomerism|F|4; Hydrocarbons|F|3; Haloalkanes & Haloarenes|L|2; Alcohols, Phenols & Ethers|F|3; Aldehydes, Ketones & Acids|F|3; Amines|F|2; Biomolecules|S|0; Polymers|S|0')},
+  {name:'Inorganic · Om Pandey Sir',nc:true,ch:parse('Periodic Table|F|2; Chemical Bonding|F|3; Coordination Compounds|F|3; p-Block|F|3; s-Block|S|0; d & f Block|S|0')}
+ ]},
+ B:{name:'Biology',emoji:'🌿',groups:[
+  {name:'Botany',nc:true,ch:parse('The Living World; Biological Classification; Plant Kingdom; Morphology of Flowering Plants; Anatomy of Flowering Plants; Cell: The Unit of Life; Cell Cycle & Division; Transport in Plants; Mineral Nutrition; Photosynthesis; Respiration in Plants; Plant Growth & Development; Sexual Reproduction in Flowering Plants')},
+  {name:'Zoology',nc:true,ch:parse('Animal Kingdom; Structural Organisation in Animals; Biomolecules; Breathing & Exchange of Gases; Body Fluids & Circulation; Excretory Products; Locomotion & Movement; Neural Control; Chemical Coordination; Human Reproduction; Reproductive Health')},
+  {name:'Genetics & Ecology',nc:true,ch:parse('Principles of Inheritance; Molecular Basis of Inheritance; Evolution; Human Health & Disease; Microbes in Human Welfare; Biotech: Principles; Biotech: Applications; Organisms & Populations; Ecosystem; Biodiversity & Conservation')}
+ ]}
+};
+/* assign ids and flat lists */
+Object.keys(SUBJ).forEach(function(k){
+  var i=0,flat=[];
+  SUBJ[k].groups.forEach(function(g){g.ch.forEach(function(c){c.id=(k==='P')?'P_'+c.n.toLowerCase().replace(/[^a-z0-9]+/g,'_'):k+i;i++;c.nc=g.nc&&c.t!=='S';flat.push(c)})});
+  SUBJ[k].flat=flat;
+});
+
+var TDATES=['2026-11-01','2026-11-22','2026-11-29','2026-12-13','2026-12-27','2027-01-10','2027-01-31','2027-02-14','2027-02-21','2027-02-28','2027-03-07','2027-03-14','2027-03-28','2027-04-04','2027-04-11'].map(function(s){var a=s.split('-');return dnum(+a[0],+a[1],+a[2])});
+var TSYL=[
+ ['Basic Maths, Motion in a straight line','Some Basic Concepts','Cell: Unit of Life','Structural Organisation in Animals'],
+ ['Basic Maths, Straight-line motion, Vectors, Motion in a plane, Laws of Motion','Basic Concepts, Redox, Solutions, Thermodynamics','Cell Unit, Cell Cycle, Living World','Structural Org., Breathing, Body Fluids'],
+ ['Laws of Motion, Work-Energy-Power','Thermodynamics, Equilibrium','Living World, Biological Classification','Body Fluids, Excretory Products'],
+ ['Centre of Mass, Rotational Motion (just attempt), Gravitation','Equilibrium, Electrochemistry, Kinetics','Plant Kingdom, Morphology of Flowering Plants','Excretory Products, Locomotion']
+];
+
+/* ---------- state / storage ---------- */
+var storageOk=true;
+var state={c:{},h:{},t:{}};
+function norm(o){
+  var s={c:{},h:{},t:{}};
+  if(o&&typeof o==='object'){
+    if(o.c&&typeof o.c==='object')s.c=o.c;
+    if(o.h&&typeof o.h==='object')s.h=o.h;
+    if(o.t&&typeof o.t==='object')s.t=o.t;
+  }
+  return s;
+}
+function load(){
+  try{
+    localStorage.setItem(KEY+'_probe','1');localStorage.removeItem(KEY+'_probe');
+  }catch(e){storageOk=false;return}
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw)state=norm(JSON.parse(raw));
+  }catch(e){state={c:{},h:{},t:{}}}
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){storageOk=false}
+}
+load();
+
+/* ---------- ui state ---------- */
+var tab='home',sub='P',bkCode='',bkMsg='';
+var lastW={};
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function pc1(n){return n===0?0:Math.round(n)}
+function bits(m){return ((m&1)?1:0)+((m&2)?1:0)+((m&4)?1:0)}
+function mask(id){return state.c[id]|0}
+
+/* ---------- progress maths ---------- */
+function subjProgress(k){
+  var pts=0,tot=0;
+  SUBJ[k].flat.forEach(function(c){if(c.t==='S')return;tot+=3;pts+=bits(mask(c.id))});
+  return tot?pts/tot*100:0;
+}
+function learned(k){
+  var done=0,tot=0;
+  SUBJ[k].flat.forEach(function(c){if(c.t==='S')return;tot+=c.d;if(mask(c.id)&1)done+=c.d});
+  return tot?done/tot*100:0;
+}
+function planned(){
+  var e=todayN()-START;
+  return Math.max(0,Math.min(100,e/120*100));
+}
+function nextUp(k){
+  var f=SUBJ[k].flat,i;
+  for(i=0;i<f.length;i++){var c=f[i];if(c.t!=='S'&&!(mask(c.id)&1))return c}
+  for(i=0;i<f.length;i++){var c2=f[i];if(c2.t!=='S'&&(mask(c2.id)&7)!==7)return c2}
+  return null;
+}
+
+/* ---------- hours ---------- */
+function hoursOf(n){
+  var h=state.h[keyOf(n)];if(!h)return 0;
+  return (parseFloat(h.p)||0)+(parseFloat(h.c)||0)+(parseFloat(h.b)||0);
+}
+function weekHrs(){var t=todayN(),s=0;for(var i=0;i<7;i++)s+=hoursOf(t-i);return s}
+function streak(){
+  var t=todayN(),k=hoursOf(t)>0?0:1,s=0;
+  while(k<4000&&hoursOf(t-k)>0){s++;k++}
+  return s;
+}
+function nf(x){return String(Math.round(x*10)/10)}
+function weekLine(){var s=streak();return 'This week: '+nf(weekHrs())+' hrs · Streak: '+s+' day'+(s===1?'':'s')+' 🔥'}
+
+/* ---------- components ---------- */
+function bar(key,pct){
+  var prev=lastW[key]!==undefined?lastW[key]:0;
+  return '<div class="bar"><i data-k="'+key+'" data-w="'+pct+'" style="width:'+prev+'%"></i></div>';
+}
+function prow(key,label,pct,small){
+  return '<div class="prow"><div class="top"><span>'+label+'</span><span>'+pc1(pct)+'%</span></div>'+bar(key,pct)+(small?'<div class="small">'+small+'</div>':'')+'</div>';
+}
+
+/* ---------- tabs ---------- */
+function vHome(){
+  var t=todayN(),dl1=Math.max(0,END-t),dl2=Math.max(0,NEET-t);
+  var ev=(((t-START)%2)+2)%2===0;
+  var k=ev?'P':'C';
+  var nx=nextUp(k);
+  var h=state.h[keyOf(t)]||{};
+  var pP=subjProgress('P'),pC=subjProgress('C'),pB=subjProgress('B');
+  var overall=(pP+pC+2*pB)/4;
+  var pl=planned();
+  var out='';
+  if(!storageOk)out+='<div class="warn">Your browser is blocking saving, so progress won’t stick. Open this link in Chrome or Safari (not a private tab).</div>';
+  out+='<h1>Vaishali’s NEET Tracker by SMASHER 🎀</h1>';
+  out+='<div class="row2"><div class="card"><div class="big">'+dl1+'</div><div class="lbl">days left to 28 Feb 2027</div></div>'+
+       '<div class="card"><div class="big">'+dl2+'</div><div class="lbl">days left to NEET (≈ 2 May 2027, confirm with NTA)</div></div></div>';
+  out+='<div class="card"><h3>Today’s focus ✨</h3><div class="focus-title">'+(ev?'Physics day ⚡':'Chemistry day 🧪')+'</div>'+
+       '<span class="pill">4–5 hrs</span><span class="pill">Biology: 2–3 hrs revise + questions</span>'+
+       '<p style="margin:12px 0 0;font-weight:700">'+(nx?'Next up: '+esc(nx.n)+' (~'+nx.d+(nx.d===1?' day)':' days)'):'All chapters done 🎉')+'</p></div>';
+  out+='<div class="card"><h3>Hours studied today</h3><div class="hrs">'+
+       '<div><label>Physics</label><input type="number" inputmode="decimal" min="0" max="24" step="0.5" data-h="p" data-d="'+keyOf(t)+'" value="'+esc(h.p===undefined?'':h.p)+'"></div>'+
+       '<div><label>Chem</label><input type="number" inputmode="decimal" min="0" max="24" step="0.5" data-h="c" data-d="'+keyOf(t)+'" value="'+esc(h.c===undefined?'':h.c)+'"></div>'+
+       '<div><label>Bio</label><input type="number" inputmode="decimal" min="0" max="24" step="0.5" data-h="b" data-d="'+keyOf(t)+'" value="'+esc(h.b===undefined?'':h.b)+'"></div></div>'+
+       '<div class="lbl" id="weekline" style="font-size:13.5px">'+weekLine()+'</div></div>';
+  out+='<div class="card"><h3>Progress</h3>'+
+       prow('o','Overall',overall)+
+       prow('p','⚡ Physics',pP,'Learned '+pc1(learned('P'))+'% · planned by today '+pc1(pl)+'%')+
+       prow('c','🧪 Chemistry',pC,'Learned '+pc1(learned('C'))+'% · planned by today '+pc1(pl)+'%')+
+       prow('b','🌿 Biology',pB)+'</div>';
+  var nt=-1,i;
+  for(i=0;i<TDATES.length;i++){if(TDATES[i]>=t){nt=i;break}}
+  out+='<div class="card"><h3>Next test</h3>';
+  if(nt<0)out+='<p style="margin:0">All tests done 🎉</p>';
+  else{
+    var df=TDATES[nt]-t;
+    out+='<div class="focus-title">Test '+(nt+1)+'</div><div class="muted" style="font-weight:600">'+fmt(TDATES[nt])+' · '+(df===0?'today!':'in '+df+' day'+(df===1?'':'s'))+'</div>';
+  }
+  out+='</div>';
+  return out;
+}
+
+function chipHtml(id,bit,label,on){
+  return '<button class="chip'+(on?' on':'')+'" data-id="'+id+'" data-bit="'+bit+'" aria-pressed="'+(on?'true':'false')+'">'+label+'</button>';
+}
+function vSyl(){
+  var out='<h2>📚 Syllabus</h2>';
+  out+='<p class="sub">Learn → Qs → Rev 1, 2, 3 (bars count Learn, Qs and Rev 1) · 📖 NCERT = line-by-line read</p>';
+  out+='<div class="seg">';
+  ['P','C','B'].forEach(function(k){
+    out+='<button data-sub="'+k+'" class="'+(sub===k?'on':'')+'">'+SUBJ[k].name+' '+SUBJ[k].emoji+'</button>';
+  });
+  out+='</div>';
+  out+='<p class="sub" style="margin-top:-2px">Full = full effort · Light = formulas + PYQs · NCERT once = read once, skip the rest</p>';
+  out+='<div class="card">'+prow('s'+sub,SUBJ[sub].emoji+' '+SUBJ[sub].name,subjProgress(sub))+'</div>';
+  if(sub==='P')out+='<div class="note">The <b>#</b> number on each chapter is the study sequence: go in that order. Chapters with no number are left as they were. Solids, Thermal Properties and AC are light (formulas + PYQs, 1 day max); EM Waves is light and under a day.</div>';
+  SUBJ[sub].groups.forEach(function(g){
+    out+='<div class="card"><h3>'+esc(g.name)+'</h3>';
+    g.ch.forEach(function(c){
+      var m=mask(c.id);
+      var tag=c.t==='F'?'<span class="tag full">Full</span>':c.t==='L'?'<span class="tag light">Light</span>':'<span class="tag once">NCERT once</span>';
+      out+='<div class="chrow"><div class="chtop"><span class="chname">'+(c.q?'<span class="seq">#'+c.q+'</span>':'')+esc(c.n)+'</span><span class="chr">'+tag+(c.d>0?'~'+c.d+'d':'')+'</span></div><div class="chips">';
+      if(c.t==='S'){
+        out+=chipHtml(c.id,1,'Read',m&1);
+      }else{
+        out+=chipHtml(c.id,1,'Learn',m&1)+chipHtml(c.id,2,'Qs',m&2)+chipHtml(c.id,4,'Rev 1',m&4)+chipHtml(c.id,8,'Rev 2',m&8)+chipHtml(c.id,16,'Rev 3',m&16);
+        if(c.nc)out+=chipHtml(c.id,32,'📖 NCERT',m&32);
+      }
+      out+='</div></div>';
+    });
+    out+='</div>';
+  });
+  return out;
+}
+
+function vTests(){
+  var t=todayN();
+  var out='<h2>📝 Test series</h2><p class="sub">log your marks and what went wrong</p>';
+  TDATES.forEach(function(dn,i){
+    var r=state.t[i]||{};
+    var has=(r.p!==undefined&&r.p!=='')||(r.c!==undefined&&r.c!=='')||(r.b!==undefined&&r.b!=='');
+    var past=dn<t;
+    var st=(past&&has)?'done':dn===t?'today!':past?'log marks':'in '+(dn-t)+' day'+(dn-t===1?'':'s');
+    var tot=(parseFloat(r.p)||0)+(parseFloat(r.c)||0)+(parseFloat(r.b)||0);
+    out+='<div class="card tc'+((past&&has)?' faded':'')+'"><div class="thead"><b>Test '+(i+1)+'</b><span class="stat">'+st+'</span></div><div class="tdate">'+fmt(dn)+'</div>';
+    if(TSYL[i]){
+      var L=['Phy','Chem','Bot','Zoo'];
+      out+='<ul class="tsyl">'+TSYL[i].map(function(s,j){return '<li><b>'+L[j]+':</b> '+esc(s)+'</li>'}).join('')+'</ul>';
+    }else{
+      out+='<p class="tsyl">Syllabus: add from your planner</p>';
+    }
+    out+='<div class="sc">'+
+      '<div><label>Phy /180</label><input type="number" inputmode="decimal" data-t="'+i+'" data-f="p" value="'+esc(r.p===undefined?'':r.p)+'"></div>'+
+      '<div><label>Chem /180</label><input type="number" inputmode="decimal" data-t="'+i+'" data-f="c" value="'+esc(r.c===undefined?'':r.c)+'"></div>'+
+      '<div><label>Bio /360</label><input type="number" inputmode="decimal" data-t="'+i+'" data-f="b" value="'+esc(r.b===undefined?'':r.b)+'"></div></div>'+
+      '<div class="tot" id="tot'+i+'">Total: '+nf(tot)+' / 720</div>'+
+      '<textarea data-t="'+i+'" data-f="n" placeholder="Mistakes to fix (concept / silly / time)…">'+esc(r.n||'')+'</textarea></div>';
+  });
+  return out;
+}
+
+function vStrategy(){
+  var c=function(t,body){return '<div class="card scard"><h3>'+t+'</h3>'+body+'</div>'};
+  var out='<h2>🌸 Strategy</h2><p class="sub">the plan in one place</p>';
+  out+=c('1. The big idea','<p><b>1 Nov → 28 Feb (120 days)</b> is for finishing the syllabus. <b>1 Mar → NEET</b> is only revision, full-length tests and fixing mistakes, with no new chapters.</p><p>Biology is already familiar so it runs daily in the background; physics and chemistry get the main time.</p>');
+  out+=c('2. Daily rhythm','<ul><li>Physics and chemistry on alternate days, 4–5 hrs on the day’s subject.</li><li>Biology every day, 2–3 hrs (NCERT line by line, revision, questions).</li><li>One buffer day a week so a slip doesn’t snowball.</li></ul>');
+  out+=c('3. Chapter loop','<ul><li><b>Learn:</b> lecture + NCERT, understand ~80% of the topics.</li><li><b>Qs:</b> module + PYQs, get ~50% of questions correct, then move on.</li><li><b>Rev 1, 2, 3:</b> revise after about a week, again a month later, and once more in March or April.</li></ul>');
+  out+=c('4. What was trimmed','<ul><li><b>Full effort</b> = high-weightage scoring chapters.</li><li><b>Light</b> = formulas + PYQs only. In physics, Solids, Thermal Properties and AC get 1 day max, and EM Waves gets under a day.</li><li><b>NCERT once</b> = rotational motion, biomolecules, polymers, s-block, d &amp; f block; read once in March if time is left.</li><li>Total allotted days are about 57 (Physics) and 51 (Chemistry), inside the 60 days each gets, leaving room for tests and buffer.</li></ul>');
+  out+=c('5. Physics sequence','<p>The <b>#</b> number on each physics chapter in the Syllabus tab is the study sequence. Follow it in order, #1 to #23: Units &amp; Dimensions, Basic Maths, Motion in 1D, Vectors, Motion in 2D, Laws of Motion, Work-Energy-Power, Gravitation, Solids, Thermal Properties, Oscillations, Waves, Electric Charges &amp; Fields, Electrostatic Potential &amp; Capacitors, Current Electricity, Magnetism &amp; Matter, EMI, AC, EM Waves, Dual Nature, Atoms, Nuclei, Semiconductors.</p><p>Chapters with no number (Centre of Mass, Rotation, Fluids, Thermodynamics &amp; KTG, Ray Optics, Wave Optics) are left as they were, so fit them in where they sit in the list.</p>');
+  out+=c('6. Rough timeline','<ul><li><b>Nov → 13 Dec:</b> Physics #1–#8 (Units &amp; Dimensions, Basic Maths, Motion in 1D, Vectors, Motion in 2D, Laws of Motion, Work-Energy-Power, Gravitation) plus Centre of Mass and Rotation, and Chemistry (Mole, Redox, Solutions, Thermodynamics, Equilibrium, Electrochemistry, Kinetics), matching tests 1–4.</li><li><b>14 Dec → 31 Jan:</b> Physics #9–#17 (Solids, Thermal Properties, Oscillations, Waves, Electric Charges &amp; Fields, Electrostatic Potential &amp; Capacitors, Current Electricity, Magnetism &amp; Matter, EMI) plus Fluids and Thermodynamics &amp; KTG; GOC, Hydrocarbons, Periodic Table, Bonding.</li><li><b>Feb:</b> Physics #18–#23 (AC, EM Waves, Dual Nature, Atoms, Nuclei, Semiconductors) plus Ray and Wave Optics; remaining organic, Coordination, p-Block.</li><li><b>Mar → NEET:</b> revise, test, analyse, repeat.</li></ul>');
+  out+=c('7. After every test','<p>Spend as long analysing as writing it. Tag each mistake as <b>concept</b>, <b>silly</b> or <b>time</b> and write it in the notes box. Re-solve wrong questions after 3 days.</p><p>For chapters not reached yet, attempt only what she’s studied and ignore the score.</p>');
+  out+='<div class="note">Chapter splits use standard NEET chapter names, not the teachers’ exact lecture lists, so adjust with the official NTA syllabus. The NEET date is the expected first Sunday of May; confirm once NTA announces it.</div>';
+  return out;
+}
+
+function vBackup(){
+  var out='<h2>💾 Backup</h2><p class="sub">your progress lives in this browser on this device</p>';
+  out+='<div class="card scard"><p>It saves automatically and stays after closing the page. It does <b>not</b> sync between phone and laptop, and clearing browser data erases it.</p><p>So copy a backup code about once a week and keep it in Notes or WhatsApp-to-self.</p></div>';
+  out+='<div class="card"><button class="btn" data-act="backup">Create backup code</button>'+
+       '<textarea id="bk" data-bk="1" style="min-height:120px" placeholder="Backup code appears here, or paste one to restore">'+esc(bkCode)+'</textarea>'+
+       '<button class="btn alt" data-act="restore" style="margin-top:10px">Restore from code</button>'+
+       '<div class="msg" id="bkmsg">'+esc(bkMsg)+'</div></div>';
+  return out;
+}
+
+var VIEWS={home:vHome,syl:vSyl,tests:vTests,strat:vStrategy,backup:vBackup};
+var TABS=[['home','🏠','Home'],['syl','📚','Syllabus'],['tests','📝','Tests'],['strat','🌸','Strategy'],['backup','💾','Backup']];
+
+/* ---------- render ---------- */
+function show(newTab){
+  var changed=newTab&&newTab!==tab;
+  var y=window.pageYOffset||document.documentElement.scrollTop||0;
+  if(changed){tab=newTab;if(tab!=='backup')bkMsg=''}
+  document.getElementById('app').innerHTML=VIEWS[tab]();
+  document.getElementById('nav').innerHTML=TABS.map(function(t){
+    return '<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'" aria-label="'+t[2]+'"><span>'+t[1]+'</span>'+t[2]+'</button>';
+  }).join('');
+  window.scrollTo(0,changed?0:y);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+    var els=document.querySelectorAll('.bar i');
+    for(var i=0;i<els.length;i++){
+      var w=parseFloat(els[i].getAttribute('data-w'))||0;
+      els[i].style.width=w+'%';lastW[els[i].getAttribute('data-k')]=w;
+    }
+  })});
+}
+
+/* ---------- events ---------- */
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('[data-tab]');if(b)show(b.getAttribute('data-tab'));
+});
+var app=document.getElementById('app');
+app.addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  if(b.hasAttribute('data-bit')){
+    var id=b.getAttribute('data-id'),bit=+b.getAttribute('data-bit');
+    state.c[id]=(mask(id))^bit;save();show();return;
+  }
+  if(b.hasAttribute('data-sub')){sub=b.getAttribute('data-sub');show();return}
+  var act=b.getAttribute('data-act');
+  if(act==='backup'){
+    try{bkCode=btoa(unescape(encodeURIComponent(JSON.stringify(state))))}catch(err){bkCode='';bkMsg='Could not create the code.';show();return}
+    var ta=document.getElementById('bk');ta.value=bkCode;
+    var done=function(ok){
+      bkMsg=ok?'Copied! Save it somewhere safe.':'Select all and copy the code.';
+      document.getElementById('bkmsg').textContent=bkMsg;
+      if(!ok){ta.focus();ta.select()}
+    };
+    var legacy=function(){
+      var ok=false;
+      try{ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);ok=document.execCommand('copy')}catch(x){ok=false}
+      done(ok);
+    };
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(bkCode).then(function(){done(true)},legacy);
+      }else legacy();
+    }catch(x){legacy()}
+    return;
+  }
+  if(act==='restore'){
+    var v=(document.getElementById('bk').value||'').trim();
+    try{
+      var o=JSON.parse(decodeURIComponent(escape(atob(v))));
+      if(!o||typeof o!=='object'||!('c' in o))throw new Error('bad');
+      state=norm(o);save();bkCode=v;bkMsg='Restored! ✅';show();
+    }catch(err){
+      bkMsg='That code didn’t work. Paste the full code.';
+      document.getElementById('bkmsg').textContent=bkMsg;
+    }
+  }
+});
+app.addEventListener('input',function(e){
+  var el=e.target;
+  if(el.hasAttribute('data-h')){
+    var d=el.getAttribute('data-d'),f=el.getAttribute('data-h');
+    if(!state.h[d])state.h[d]={};
+    state.h[d][f]=el.value;save();
+    var w=document.getElementById('weekline');if(w)w.textContent=weekLine();
+  }else if(el.hasAttribute('data-t')){
+    var i=el.getAttribute('data-t'),g=el.getAttribute('data-f');
+    if(!state.t[i])state.t[i]={};
+    state.t[i][g]=el.value;save();
+    if(g!=='n'){
+      var r=state.t[i];
+      var tot=(parseFloat(r.p)||0)+(parseFloat(r.c)||0)+(parseFloat(r.b)||0);
+      var te=document.getElementById('tot'+i);if(te)te.textContent='Total: '+nf(tot)+' / 720';
+    }
+  }else if(el.hasAttribute('data-bk')){
+    bkCode=el.value;
+  }
+});
+
+/* refresh at midnight / when returning to the page */
+document.addEventListener('visibilitychange',function(){
+  if(!document.hidden){var a=document.activeElement;if(!a||a===document.body)show()}
+});
+
+show('home');
+})();
+</script>
+</body>
+</html>
